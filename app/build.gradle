@@ -46,19 +46,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
-    //Moxy
-    def moxy_version = "2.2.2"
-    implementation "com.github.moxy-community:moxy:$moxy_version"
-    implementation "com.github.moxy-community:moxy-ktx:$moxy_version"
-    implementation "com.github.moxy-community:moxy:$moxy_version"
-    kapt "com.github.moxy-community:moxy-compiler:$moxy_version"
-    implementation "com.github.moxy-community:moxy-ktx:$moxy_version"
-    implementation "com.github.moxy-community:moxy-androidx:$moxy_version"
-    annotationProcessor "com.github.moxy-community:moxy-compiler:$moxy_version"
-
-    //Cicerone
-    implementation "com.github.terrakok:cicerone:7.1"
-
     //RxJava
     def rx_java_version = "3.0.0"
     implementation "io.reactivex.rxjava3:rxjava:$rx_java_version"
