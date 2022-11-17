@@ -1,8 +1,8 @@
 package com.kerencev.translator.model.repository
 
-import io.reactivex.rxjava3.core.Observable
+import com.kerencev.translator.model.data.DataModel
 
 interface Repository<T : Any> {
 
-    fun getData(word: String): Observable<T>
+    suspend fun getData(word: String): List<DataModel>
 }

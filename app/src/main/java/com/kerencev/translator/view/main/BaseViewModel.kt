@@ -6,19 +6,32 @@ import androidx.lifecycle.ViewModel
 import com.kerencev.translator.model.data.AppState
 import com.kerencev.translator.rx.SchedulerProvider
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.observers.DisposableObserver
+import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(
-    protected val liveData: MutableLiveData<T> = MutableLiveData(),
+    protected val _liveData: MutableLiveData<T> = MutableLiveData(),
     protected val compositeDisposable: CompositeDisposable = CompositeDisposable(),
     protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
 ) : ViewModel() {
 
+    protected val viewModelCoroutineScope = CoroutineScope(
+        Dispatchers.Main
+                + SupervisorJob()
+                + CoroutineExceptionHandler { _, throwable ->
+            handleError(throwable)
+        })
+
+
+    protected fun cancelJob() {
+        viewModelCoroutineScope.coroutineContext.cancelChildren()
+    }
+
     abstract fun getData(word: String, isOnline: Boolean)
 
+    abstract fun handleError(error: Throwable)
+
     override fun onCleared() {
-        compositeDisposable.clear()
+        cancelJob()
         super.onCleared()
     }
 
@@ -26,39 +39,36 @@ abstract class BaseViewModel<T : AppState>(
         private val interactor: MainInteractor
     ) : BaseViewModel<AppState>() {
 
-        private var appState: AppState? = null
+        private val liveData: LiveData<AppState> = _liveData
 
         fun subscribe(): LiveData<AppState> {
             return liveData
         }
 
         override fun getData(word: String, isOnline: Boolean) {
-            compositeDisposable.add(
-                interactor.getData(word, isOnline)
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
-                    .doOnSubscribe(doOnSubscribe())
-                    .subscribeWith(getObserver())
-            )
+            _liveData.value = AppState.Loading(null)
+            cancelJob()
+            viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
+
         }
 
-        private fun doOnSubscribe(): (Disposable) -> Unit =
-            { liveData.value = AppState.Loading(null) }
-
-
-        private fun getObserver(): DisposableObserver<AppState> {
-            return object : DisposableObserver<AppState>() {
-                override fun onNext(state: AppState) {
-                    appState = state
-                    liveData.value = appState
-                }
-
-                override fun onError(e: Throwable) {
-                    liveData.value = AppState.Error(e)
-                }
-
-                override fun onComplete() = Unit
+        private suspend fun startInteractor(word: String, isOnline: Boolean) =
+            withContext(Dispatchers.IO) {
+                _liveData.postValue(
+                    interactor.getData(
+                        word,
+                        isOnline
+                    )
+                )
             }
+
+        override fun handleError(error: Throwable) {
+            _liveData.postValue(AppState.Error(error))
+        }
+
+        override fun onCleared() {
+            _liveData.value = AppState.Success(null)
+            super.onCleared()
         }
     }
 }
