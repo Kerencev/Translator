@@ -1,10 +1,7 @@
 package com.kerencev.translator.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.ActivityMainBinding
@@ -12,16 +9,13 @@ import com.kerencev.translator.model.data.AppState
 import com.kerencev.translator.model.data.DataModel
 import com.kerencev.translator.view.base.BaseActivity
 import com.kerencev.translator.view.main.adapter.MainAdapter
-import dagger.android.AndroidInjection
-import javax.inject.Inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<AppState>() {
 
     private lateinit var binding: ActivityMainBinding
 
-    @Inject
-    internal lateinit var viewModelFactory: ViewModelProvider.Factory
-    override lateinit var model: BaseViewModel.MainViewModel
+    override val model: BaseViewModel.MainViewModel by viewModel()
 
     private var adapter: MainAdapter? = null
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
@@ -32,15 +26,12 @@ class MainActivity : BaseActivity<AppState>() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        model = viewModelFactory.create(BaseViewModel.MainViewModel::class.java)
-        Log.d("TAG", model.toString())
-        model.subscribe().observe(this@MainActivity, Observer<AppState> {
+        model.subscribe().observe(this@MainActivity) {
             renderData(it)
-        })
+        }
         binding.searchFab.setOnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
             searchDialogFragment.setOnSearchClickListener(object :

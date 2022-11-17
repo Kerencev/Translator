@@ -8,7 +8,6 @@ import com.kerencev.translator.rx.SchedulerProvider
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.observers.DisposableObserver
-import javax.inject.Inject
 
 abstract class BaseViewModel<T : AppState>(
     protected val liveData: MutableLiveData<T> = MutableLiveData(),
@@ -23,7 +22,7 @@ abstract class BaseViewModel<T : AppState>(
         super.onCleared()
     }
 
-    class MainViewModel @Inject constructor(
+    class MainViewModel(
         private val interactor: MainInteractor
     ) : BaseViewModel<AppState>() {
 
