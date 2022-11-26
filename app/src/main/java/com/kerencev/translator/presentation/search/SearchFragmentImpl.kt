@@ -6,16 +6,12 @@ import android.widget.Toast
 import com.kerencev.translator.R
 import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.databinding.FragmentSearchBinding
-import com.kerencev.translator.presentation.base.AppState
 import com.kerencev.translator.presentation.base.ViewBindingFragment
-import com.kerencev.translator.presentation.main.SearchDialogFragment
-import com.kerencev.translator.presentation.main.SearchViewModel
-import com.kerencev.translator.presentation.main.adapter.SearchAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragmentImpl :
     ViewBindingFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
-    SearchFragment<AppState> {
+    SearchFragment<SearchState> {
 
     private val viewModel: SearchViewModel.Base by viewModel()
     private var adapter: SearchAdapter? = null
@@ -43,9 +39,9 @@ class SearchFragmentImpl :
         }
     }
 
-    override fun renderData(appState: AppState) {
+    override fun renderData(appState: SearchState) {
         when (appState) {
-            is AppState.Success -> {
+            is SearchState.Success -> {
                 val dataModel = appState.data
                 if (dataModel == null || dataModel.isEmpty()) {
                     showErrorScreen(getString(R.string.empty_server_response_on_success))
@@ -59,11 +55,11 @@ class SearchFragmentImpl :
                     }
                 }
             }
-            is AppState.Loading -> {
+            is SearchState.Loading -> {
                 showViewLoading()
                 binding.progressLoading.visibility = android.view.View.VISIBLE
             }
-            is AppState.Error -> {
+            is SearchState.Error -> {
                 showErrorScreen(appState.error.message)
             }
         }

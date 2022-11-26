@@ -1,4 +1,4 @@
-package com.kerencev.translator.presentation.main.adapter
+package com.kerencev.translator.presentation.search
 
 import android.view.LayoutInflater
 import android.view.View

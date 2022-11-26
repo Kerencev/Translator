@@ -1,4 +1,4 @@
-package com.kerencev.translator.presentation.main
+package com.kerencev.translator.presentation.search
 
 import android.os.Bundle
 import android.text.Editable

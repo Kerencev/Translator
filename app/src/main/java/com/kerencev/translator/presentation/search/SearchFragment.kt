@@ -1,7 +1,14 @@
 package com.kerencev.translator.presentation.search
 
-import com.kerencev.translator.presentation.base.AppState
+import com.kerencev.translator.data.dto.DataModel
 
-interface SearchFragment<T : AppState> {
+interface SearchFragment<T : SearchState> {
     abstract fun renderData(appState: T)
+}
+
+sealed class SearchState {
+
+    data class Success(val data: List<DataModel>?) : SearchState()
+    data class Error(val error: Throwable) : SearchState()
+    object Loading : SearchState()
 }
