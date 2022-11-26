@@ -24,7 +24,7 @@ class DetailsFragmentImpl :
     override fun renderData(data: DetailsModel) {
         with(binding) {
             ivWord.loadImage(data.imageUrl)
-            tvText.text = data.word
+            tvWord.text = data.word
             tvTranscription.text = data.transcription
             tvTranslation.text = data.translates
         }
