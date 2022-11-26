@@ -1,16 +1,17 @@
 package com.kerencev.translator.presentation.search
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.kerencev.translator.R
 import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.databinding.FragmentSearchBinding
-import com.kerencev.translator.presentation.base.ViewBindingFragment
+import com.kerencev.translator.presentation.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragmentImpl :
-    ViewBindingFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
+    BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
     SearchFragment<SearchState> {
 
     private val viewModel: SearchViewModel.Base by viewModel()
@@ -28,14 +29,9 @@ class SearchFragmentImpl :
             renderData(it)
         }
         binding.searchFab.setOnClickListener {
-            val searchDialogFragment = SearchDialogFragment.newInstance()
-            searchDialogFragment.setOnSearchClickListener(object :
-                SearchDialogFragment.OnSearchClickListener {
-                override fun onClick(searchWord: String) {
-                    viewModel.getData(searchWord)
-                }
-            })
-            searchDialogFragment.show(parentFragmentManager, "")
+            mainActivity?.showSearchDialog { word ->
+                viewModel.getData(word)
+            }
         }
     }
 

@@ -3,7 +3,7 @@ package com.kerencev.translator.presentation.search
 import com.kerencev.translator.data.dto.DataModel
 
 interface SearchFragment<T : SearchState> {
-    abstract fun renderData(appState: T)
+    fun renderData(appState: T)
 }
 
 sealed class SearchState {
