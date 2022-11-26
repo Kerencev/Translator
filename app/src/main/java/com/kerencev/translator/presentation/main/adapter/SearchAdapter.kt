@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kerencev.translator.R
 import com.kerencev.translator.data.dto.DataModel
 
-class MainAdapter(
+class SearchAdapter(
     private var onListItemClickListener: OnListItemClickListener,
     private var data: List<DataModel>
 ) :
-    RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
+    RecyclerView.Adapter<SearchAdapter.RecyclerItemViewHolder>() {
 
     fun setData(data: List<DataModel>) {
         this.data = data

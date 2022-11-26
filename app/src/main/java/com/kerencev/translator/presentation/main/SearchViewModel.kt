@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.kerencev.translator.presentation.base.AppState
 import kotlinx.coroutines.*
 
-abstract class BaseViewModel<T : AppState>(
+abstract class SearchViewModel<T : AppState>(
     protected val _liveData: MutableLiveData<T> = MutableLiveData()
 ) : ViewModel() {
 
@@ -21,7 +21,7 @@ abstract class BaseViewModel<T : AppState>(
         viewModelCoroutineScope.coroutineContext.cancelChildren()
     }
 
-    abstract fun getData(word: String, isOnline: Boolean)
+    abstract fun getData(word: String)
 
     abstract fun handleError(error: Throwable)
 
@@ -30,9 +30,9 @@ abstract class BaseViewModel<T : AppState>(
         super.onCleared()
     }
 
-    class MainViewModel(
+    class Base(
         private val interactor: Interactor.MainInteractor
-    ) : BaseViewModel<AppState>() {
+    ) : SearchViewModel<AppState>() {
 
         private val liveData: LiveData<AppState> = _liveData
 
@@ -40,8 +40,8 @@ abstract class BaseViewModel<T : AppState>(
             return liveData
         }
 
-        override fun getData(word: String, isOnline: Boolean) {
-            _liveData.value = AppState.Loading(null)
+        override fun getData(word: String) {
+            _liveData.value = AppState.Loading
             cancelJob()
             viewModelCoroutineScope.launch { startInteractor(word) }
 
