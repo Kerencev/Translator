@@ -6,8 +6,10 @@
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/drawable/bottom_sheet_dialog_background.xml" value="0.1" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/drawable/ic_delete_text.xml" value="0.1" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/drawable/ic_search.xml" value="0.1" />
+        <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/drawable/icon_image.xml" value="0.202" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/layout/activity_main_recyclerview_item.xml" value="0.1" />
+        <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/layout/fragment_details.xml" value="0.33" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/layout/fragment_search.xml" value="0.25" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/layout/fragment_search_recyclerview_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Keren/AndroidStudioProjects/Translator/app/src/main/res/layout/search_dialog_fragment.xml" value="0.22" />

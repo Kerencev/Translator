@@ -9,4 +9,5 @@
     <string name="delete_description">X</string>
     <string name="search_meaning">Поиск значения</string>
     <string name="search_history">История поиска</string>
+    <string name="image_of_the_word">Изображение слов</string>
 </resources>

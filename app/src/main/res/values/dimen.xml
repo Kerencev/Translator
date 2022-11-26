@@ -21,7 +21,9 @@
     <dimen name="text_size_standard">17sp</dimen>
     <dimen name="text_size_standard_header">20sp</dimen>
     <dimen name="text_size_large">25sp</dimen>
+    <dimen name="fragment_details_text_size">24sp</dimen>
 
     //Corner radius
     <dimen name="bottom_sheet_dialog_corner_radius">10dp</dimen>
+    <dimen name="fragment_details_tv_translation_margin">8dp</dimen>
 </resources>
