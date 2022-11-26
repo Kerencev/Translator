@@ -16,16 +16,18 @@ class SearchFragmentImpl :
     SearchFragment<SearchState> {
 
     private val viewModel: SearchViewModel.Base by viewModel()
-    private var adapter: SearchAdapter? = null
-    private val onListItemClickListener: SearchAdapter.OnListItemClickListener =
+    private val adapter by lazy { SearchAdapter(onListItemClickListener) }
+    private val onListItemClickListener by lazy {
         object : SearchAdapter.OnListItemClickListener {
             override fun onItemClick(data: DataModel) {
                 Toast.makeText(requireContext(), data.text, Toast.LENGTH_SHORT).show()
             }
         }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.mainActivityRecyclerview.adapter = adapter
         viewModel.subscribe().observe(viewLifecycleOwner) {
             renderData(it)
         }
@@ -44,12 +46,7 @@ class SearchFragmentImpl :
                     showError(getString(R.string.empty_server_response_on_success))
                 } else {
                     showSuccess()
-                    if (adapter == null) {
-                        binding.mainActivityRecyclerview.adapter =
-                            SearchAdapter(onListItemClickListener, dataModel)
-                    } else {
-                        adapter!!.setData(dataModel)
-                    }
+                    adapter.submitList(dataModel)
                 }
             }
             is SearchState.Loading -> {

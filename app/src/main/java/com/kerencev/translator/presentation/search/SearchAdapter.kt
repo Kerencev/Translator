@@ -4,53 +4,54 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.kerencev.translator.R
 import com.kerencev.translator.data.dto.DataModel
+import com.kerencev.translator.databinding.FragmentSearchRecyclerviewItemBinding
 
 class SearchAdapter(
-    private var onListItemClickListener: OnListItemClickListener,
-    private var data: List<DataModel>
-) :
-    RecyclerView.Adapter<SearchAdapter.RecyclerItemViewHolder>() {
-
-    fun setData(data: List<DataModel>) {
-        this.data = data
-        notifyDataSetChanged()
-    }
+    private var onListItemClickListener: OnListItemClickListener
+) : ListAdapter<DataModel, SearchAdapter.RecyclerItemViewHolder>(ItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerItemViewHolder {
-        return RecyclerItemViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_main_recyclerview_item, parent, false) as View
-        )
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = FragmentSearchRecyclerviewItemBinding.inflate(inflater, parent, false)
+        return RecyclerItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: RecyclerItemViewHolder, position: Int) {
-        holder.bind(data[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
-
-    inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class RecyclerItemViewHolder(private val binding: FragmentSearchRecyclerviewItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
-                itemView.findViewById<TextView>(R.id.header_textview_recycler_item).text = data.text
-                itemView.findViewById<TextView>(R.id.description_textview_recycler_item).text =
-                    data.meanings?.get(0)?.translation?.translation
-                itemView.setOnClickListener { openInNewWindow(data) }
+                with(binding) {
+                    headerTextviewRecyclerItem.text = data.text
+                    descriptionTextviewRecyclerItem.text =
+                        data.meanings?.get(0)?.translation?.translation
+                    itemView.setOnClickListener { onListItemClickListener.onItemClick(data) }
+                }
             }
         }
     }
 
-    private fun openInNewWindow(listItemData: DataModel) {
-        onListItemClickListener.onItemClick(listItemData)
-    }
-
     interface OnListItemClickListener {
         fun onItemClick(data: DataModel)
+    }
+
+    class ItemCallback : DiffUtil.ItemCallback<DataModel>() {
+
+        override fun areItemsTheSame(oldItem: DataModel, newItem: DataModel): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: DataModel, newItem: DataModel): Boolean {
+            return oldItem == newItem
+        }
     }
 }
