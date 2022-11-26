@@ -1,13 +1,14 @@
 package com.kerencev.translator.presentation.search
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.kerencev.translator.R
 import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.databinding.FragmentSearchBinding
 import com.kerencev.translator.presentation.base.BaseFragment
+import com.kerencev.translator.presentation.base.makeGone
+import com.kerencev.translator.presentation.base.makeVisible
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragmentImpl :
@@ -40,9 +41,9 @@ class SearchFragmentImpl :
             is SearchState.Success -> {
                 val dataModel = appState.data
                 if (dataModel == null || dataModel.isEmpty()) {
-                    showErrorScreen(getString(R.string.empty_server_response_on_success))
+                    showError(getString(R.string.empty_server_response_on_success))
                 } else {
-                    showViewSuccess()
+                    showSuccess()
                     if (adapter == null) {
                         binding.mainActivityRecyclerview.adapter =
                             SearchAdapter(onListItemClickListener, dataModel)
@@ -52,38 +53,33 @@ class SearchFragmentImpl :
                 }
             }
             is SearchState.Loading -> {
-                showViewLoading()
-                binding.progressLoading.visibility = android.view.View.VISIBLE
+                showLoading()
             }
             is SearchState.Error -> {
-                showErrorScreen(appState.error.message)
+                showError(appState.error.message)
             }
         }
     }
 
-    private fun showErrorScreen(error: String?) {
-        showViewError()
-        binding.errorTextview.text = error ?: getString(R.string.undefined_error)
-        binding.reloadButton.setOnClickListener {
+    override fun showError(error: String?) = with(binding) {
+        successLinearLayout.makeGone()
+        progressLoading.makeGone()
+        errorLinearLayout.makeVisible()
+        errorTextview.text = error ?: getString(R.string.undefined_error)
+        reloadButton.setOnClickListener {
             viewModel.getData("hi")
         }
     }
 
-    private fun showViewSuccess() {
-        binding.successLinearLayout.visibility = android.view.View.VISIBLE
-        binding.progressLoading.visibility = android.view.View.GONE
-        binding.errorLinearLayout.visibility = android.view.View.GONE
+    override fun showSuccess() = with(binding) {
+        successLinearLayout.makeVisible()
+        progressLoading.makeGone()
+        errorLinearLayout.makeGone()
     }
 
-    private fun showViewLoading() {
-        binding.successLinearLayout.visibility = android.view.View.GONE
-        binding.progressLoading.visibility = android.view.View.VISIBLE
-        binding.errorLinearLayout.visibility = android.view.View.GONE
-    }
-
-    private fun showViewError() {
-        binding.successLinearLayout.visibility = android.view.View.GONE
-        binding.progressLoading.visibility = android.view.View.GONE
-        binding.errorLinearLayout.visibility = android.view.View.VISIBLE
+    override fun showLoading() = with(binding) {
+        successLinearLayout.makeGone()
+        errorLinearLayout.makeGone()
+        progressLoading.makeVisible()
     }
 }
