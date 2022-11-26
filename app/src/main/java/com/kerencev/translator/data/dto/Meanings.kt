@@ -1,4 +1,4 @@
-package com.kerencev.translator.model.data
+package com.kerencev.translator.data.dto
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,4 +1,4 @@
-package com.kerencev.translator.view.main
+package com.kerencev.translator.presentation.main
 
 import android.os.Bundle
 import android.text.Editable
@@ -29,9 +29,9 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
             }
         }
 
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
 
-        override fun afterTextChanged(s: Editable) {}
+        override fun afterTextChanged(s: Editable) = Unit
     }
 
     private val onSearchButtonClickListener =

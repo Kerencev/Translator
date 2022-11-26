@@ -1,9 +1,9 @@
-package com.kerencev.translator.view.main
+package com.kerencev.translator.presentation.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kerencev.translator.model.data.AppState
+import com.kerencev.translator.presentation.base.AppState
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(
@@ -43,18 +43,13 @@ abstract class BaseViewModel<T : AppState>(
         override fun getData(word: String, isOnline: Boolean) {
             _liveData.value = AppState.Loading(null)
             cancelJob()
-            viewModelCoroutineScope.launch { startInteractor(word, isOnline) }
+            viewModelCoroutineScope.launch { startInteractor(word) }
 
         }
 
-        private suspend fun startInteractor(word: String, isOnline: Boolean) =
+        private suspend fun startInteractor(word: String) =
             withContext(Dispatchers.IO) {
-                _liveData.postValue(
-                    interactor.getData(
-                        word,
-                        isOnline
-                    )
-                )
+                _liveData.postValue(interactor.getData(word))
             }
 
         override fun handleError(error: Throwable) {

@@ -1,14 +1,14 @@
-package com.kerencev.translator.view.main
+package com.kerencev.translator.presentation.main
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kerencev.translator.R
+import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.databinding.ActivityMainBinding
-import com.kerencev.translator.model.data.AppState
-import com.kerencev.translator.model.data.DataModel
-import com.kerencev.translator.view.base.BaseActivity
-import com.kerencev.translator.view.main.adapter.MainAdapter
+import com.kerencev.translator.presentation.base.AppState
+import com.kerencev.translator.presentation.base.BaseActivity
+import com.kerencev.translator.presentation.main.adapter.MainAdapter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : BaseActivity<AppState>() {

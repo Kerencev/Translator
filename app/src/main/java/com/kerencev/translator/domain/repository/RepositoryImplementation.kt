@@ -1,7 +1,7 @@
-package com.kerencev.translator.model.repository
+package com.kerencev.translator.domain.repository
 
-import com.kerencev.translator.model.data.DataModel
-import com.kerencev.translator.model.datasource.DataSource
+import com.kerencev.translator.data.dto.DataModel
+import com.kerencev.translator.data.remote.DataSource
 
 class RepositoryImplementation(private val dataSource: DataSource<List<DataModel>>) :
     Repository<List<DataModel>> {

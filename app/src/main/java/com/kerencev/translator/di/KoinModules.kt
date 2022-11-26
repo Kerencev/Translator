@@ -1,25 +1,22 @@
 package com.kerencev.translator.di
 
-import com.kerencev.translator.model.data.DataModel
-import com.kerencev.translator.model.datasource.RetrofitImplementation
-import com.kerencev.translator.model.datasource.RoomDataBaseImplementation
-import com.kerencev.translator.model.repository.Repository
-import com.kerencev.translator.model.repository.RepositoryImplementation
-import com.kerencev.translator.view.main.BaseViewModel
-import com.kerencev.translator.view.main.Interactor
-import org.koin.core.qualifier.named
+import com.kerencev.translator.data.dto.DataModel
+import com.kerencev.translator.data.remote.DataSource
+import com.kerencev.translator.domain.repository.Repository
+import com.kerencev.translator.domain.repository.RepositoryImplementation
+import com.kerencev.translator.presentation.main.BaseViewModel
+import com.kerencev.translator.presentation.main.Interactor
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val application = module {
-    single<Repository<List<DataModel>>>(named(NAME_REMOTE)) {
-        RepositoryImplementation(RetrofitImplementation())
-    }
-    single<Repository<List<DataModel>>>(named(NAME_LOCAL)) {
-        RepositoryImplementation(RoomDataBaseImplementation())
+    single<Repository<List<DataModel>>> {
+        RepositoryImplementation(DataSource.RetrofitImplementation())
     }
 }
 
 val mainScreen = module {
-    factory { Interactor.MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
-    factory { BaseViewModel.MainViewModel(get()) }
+    factory { Interactor.MainInteractor(repositoryRemote = get()) }
+
+    viewModel { BaseViewModel.MainViewModel(interactor = get()) }
 }
