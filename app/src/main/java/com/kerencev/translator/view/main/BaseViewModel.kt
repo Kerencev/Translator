@@ -4,14 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kerencev.translator.model.data.AppState
-import com.kerencev.translator.rx.SchedulerProvider
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.*
 
 abstract class BaseViewModel<T : AppState>(
-    protected val _liveData: MutableLiveData<T> = MutableLiveData(),
-    protected val compositeDisposable: CompositeDisposable = CompositeDisposable(),
-    protected val schedulerProvider: SchedulerProvider = SchedulerProvider()
+    protected val _liveData: MutableLiveData<T> = MutableLiveData()
 ) : ViewModel() {
 
     protected val viewModelCoroutineScope = CoroutineScope(
@@ -20,7 +16,6 @@ abstract class BaseViewModel<T : AppState>(
                 + CoroutineExceptionHandler { _, throwable ->
             handleError(throwable)
         })
-
 
     protected fun cancelJob() {
         viewModelCoroutineScope.coroutineContext.cancelChildren()
@@ -36,7 +31,7 @@ abstract class BaseViewModel<T : AppState>(
     }
 
     class MainViewModel(
-        private val interactor: MainInteractor
+        private val interactor: Interactor.MainInteractor
     ) : BaseViewModel<AppState>() {
 
         private val liveData: LiveData<AppState> = _liveData

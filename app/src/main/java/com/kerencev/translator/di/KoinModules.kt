@@ -6,7 +6,7 @@ import com.kerencev.translator.model.datasource.RoomDataBaseImplementation
 import com.kerencev.translator.model.repository.Repository
 import com.kerencev.translator.model.repository.RepositoryImplementation
 import com.kerencev.translator.view.main.BaseViewModel
-import com.kerencev.translator.view.main.MainInteractor
+import com.kerencev.translator.view.main.Interactor
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -20,6 +20,6 @@ val application = module {
 }
 
 val mainScreen = module {
-    factory { MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
+    factory { Interactor.MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
     factory { BaseViewModel.MainViewModel(get()) }
 }
