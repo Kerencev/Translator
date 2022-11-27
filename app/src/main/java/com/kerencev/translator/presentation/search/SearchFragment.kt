@@ -1,6 +1,7 @@
 package com.kerencev.translator.presentation.search
 
 import androidx.fragment.app.Fragment
+import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.presentation.details.DetailsModel
 
 interface SearchFragment<T : SearchState> {
@@ -12,7 +13,7 @@ interface SearchFragment<T : SearchState> {
 }
 
 sealed class SearchState {
-    data class Success(val data: List<com.kerencev.translator.data.dto.DataModel>?) : SearchState()
+    data class Success(val data: List<DataModel>?) : SearchState()
     data class Error(val error: Throwable) : SearchState()
     object Loading : SearchState()
 }

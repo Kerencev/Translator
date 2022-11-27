@@ -8,8 +8,8 @@ import com.kerencev.translator.databinding.ActivityMainBinding
 import com.kerencev.translator.presentation.base.NavigationActivity
 import com.kerencev.translator.presentation.details.DetailsFragmentImpl
 import com.kerencev.translator.presentation.details.DetailsModel
+import com.kerencev.translator.presentation.history.HistoryFragmentImpl
 import com.kerencev.translator.presentation.search.SearchDialogFragment
-import com.kerencev.translator.presentation.search.SearchFragmentImpl
 
 class MainActivity : AppCompatActivity(), NavigationActivity {
 
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity(), NavigationActivity {
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SearchFragmentImpl())
+                .replace(R.id.fragment_container, HistoryFragmentImpl())
                 .commit()
         }
     }

@@ -8,7 +8,7 @@ class TranslatorApp : Application() {
     override fun onCreate() {
         super.onCreate()
         startKoin {
-            modules(listOf(application, mainScreen))
+            modules(listOf(application, searchScreen, historyScreen))
         }
     }
 }
