@@ -15,7 +15,7 @@ class SearchFragmentImpl :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
     SearchFragment<SearchState> {
 
-    private val viewModel: SearchViewModel.Base by viewModel()
+    private val viewModel: SearchViewModel by viewModel()
     private val adapter by lazy { SearchAdapter(onListItemClickListener) }
     private val onListItemClickListener by lazy {
         object : SearchAdapter.OnListItemClickListener {
@@ -28,7 +28,7 @@ class SearchFragmentImpl :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.mainActivityRecyclerview.adapter = adapter
-        viewModel.subscribe().observe(viewLifecycleOwner) {
+        viewModel.liveData.observe(viewLifecycleOwner) {
             renderData(it)
         }
         binding.searchFab.setOnClickListener {

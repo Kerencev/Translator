@@ -1,15 +1,14 @@
 package com.kerencev.translator.presentation.search
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.domain.repository.Repository
 import kotlinx.coroutines.*
 
-abstract class SearchViewModel<T : SearchState>(
-    protected val _liveData: MutableLiveData<T> = MutableLiveData()
-) : ViewModel() {
+abstract class SearchViewModel() : ViewModel() {
+
+    abstract val liveData: MutableLiveData<SearchState>
 
     protected val viewModelCoroutineScope = CoroutineScope(
         Dispatchers.Main
@@ -33,16 +32,12 @@ abstract class SearchViewModel<T : SearchState>(
 
     class Base(
         private val interactor: Interactor.MainInteractor
-    ) : SearchViewModel<SearchState>() {
+    ) : SearchViewModel() {
 
-        private val liveData: LiveData<SearchState> = _liveData
-
-        fun subscribe(): LiveData<SearchState> {
-            return liveData
-        }
+        override val liveData = MutableLiveData<SearchState>()
 
         override fun getData(word: String) {
-            _liveData.value = SearchState.Loading
+            liveData.value = SearchState.Loading
             cancelJob()
             viewModelCoroutineScope.launch { startInteractor(word) }
 
@@ -50,15 +45,15 @@ abstract class SearchViewModel<T : SearchState>(
 
         private suspend fun startInteractor(word: String) =
             withContext(Dispatchers.IO) {
-                _liveData.postValue(interactor.getData(word))
+                liveData.postValue(interactor.getData(word))
             }
 
         override fun handleError(error: Throwable) {
-            _liveData.postValue(SearchState.Error(error))
+            liveData.postValue(SearchState.Error(error))
         }
 
         override fun onCleared() {
-            _liveData.value = SearchState.Success(null)
+            liveData.value = SearchState.Success(null)
             super.onCleared()
         }
     }

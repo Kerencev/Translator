@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate),
     HistoryFragment {
 
-    private val viewModel: HistoryViewModel.Base by viewModel()
+    private val viewModel: HistoryViewModel by viewModel()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
