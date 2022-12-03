@@ -9,6 +9,7 @@ import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.makeGone
 import com.kerencev.translator.presentation.base.makeVisible
 import com.kerencev.translator.presentation.details.DetailsFragmentImpl
+import com.kerencev.translator.presentation.history.HistoryFragmentImpl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragmentImpl :
@@ -44,7 +45,7 @@ class SearchFragmentImpl :
                 R.id.action_history -> {
                     mainActivity?.navigateTo(
                         currentFragment = this,
-                        nextFragment = DetailsFragmentImpl()
+                        nextFragment = HistoryFragmentImpl()
                     )
                 }
             }

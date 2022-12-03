@@ -22,8 +22,10 @@ val application = module {
         Room.databaseBuilder(
             androidContext(),
             DataBase::class.java,
-            "history.db"
-        ).build()
+            "history.db",
+        )
+            .fallbackToDestructiveMigration()
+            .build()
     }
     single<HistoryRepository> { HistoryRepository.Base(db = get()) }
 }

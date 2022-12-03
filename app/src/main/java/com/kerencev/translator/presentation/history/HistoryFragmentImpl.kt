@@ -10,24 +10,36 @@ class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistory
     HistoryFragment {
 
     private val viewModel: HistoryViewModel by viewModel()
+    private val adapter: HistoryAdapter by lazy {
+        HistoryAdapter()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        requestData()
+        if (savedInstanceState == null) {
+            requestData()
+        }
+        viewModel.liveData.observe(viewLifecycleOwner) {
+            renderData(it)
+        }
+        binding.historyRecycler.adapter = adapter
     }
 
     override fun requestData() {
         viewModel.getData()
-        viewModel.liveData.observe(viewLifecycleOwner) {
-            renderData(it)
-        }
     }
 
     override fun renderData(historyState: HistoryState) {
         when (historyState) {
-            is HistoryState.Success -> {}
-            is HistoryState.Loading -> {}
-            is HistoryState.Error -> {}
+            is HistoryState.Success -> {
+                adapter.submitList(historyState.data)
+            }
+            is HistoryState.Loading -> {
+
+            }
+            is HistoryState.Error -> {
+
+            }
         }
     }
 }

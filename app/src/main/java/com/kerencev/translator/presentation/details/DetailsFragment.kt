@@ -10,6 +10,7 @@ interface DetailsFragment {
 
 @Parcelize
 data class DetailsModel(
+    val id: String,
     val word: String?,
     val transcription: String?,
     val translates: String,

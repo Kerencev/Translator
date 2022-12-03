@@ -9,7 +9,7 @@ import com.kerencev.translator.data.local.entity.HistoryEntity
     entities = [
         HistoryEntity::class
     ],
-    version = 1
+    version = 2
 )
 abstract class DataBase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao

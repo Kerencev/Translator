@@ -15,6 +15,7 @@ data class DataModel(
 
     fun convertToDetailsModel(): DetailsModel {
         return DetailsModel(
+            id = id ?: "-1",
             word = this.text,
             transcription = this.meanings?.first()?.transcription,
             translates = getAllTranslates(),
@@ -24,7 +25,7 @@ data class DataModel(
 
     fun convertToHistoryEntity(): HistoryEntity {
         return HistoryEntity(
-            id = id ?: "-1",
+            id = 0,
             word = text,
             transcription = this.meanings?.first()?.transcription,
             translates = getAllTranslates(),

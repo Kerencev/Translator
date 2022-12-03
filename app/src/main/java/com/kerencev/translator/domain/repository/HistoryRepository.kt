@@ -16,14 +16,9 @@ interface HistoryRepository {
         }
 
         override suspend fun getAllHistory(): List<DetailsModel> {
-            return listOf(
-                DetailsModel(
-                    "",
-                    "",
-                    "",
-                    ""
-                )
-            )
+            return db.historyDao().getAll().map { historyEntity ->
+                historyEntity.toDetailsModel()
+            }
         }
     }
 }
