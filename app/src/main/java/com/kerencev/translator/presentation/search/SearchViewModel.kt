@@ -3,10 +3,11 @@ package com.kerencev.translator.presentation.search
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kerencev.translator.data.dto.DataModel
+import com.kerencev.translator.domain.repository.HistoryRepository
 import com.kerencev.translator.domain.repository.Repository
 import kotlinx.coroutines.*
 
-abstract class SearchViewModel() : ViewModel() {
+abstract class SearchViewModel : ViewModel() {
 
     abstract val liveData: MutableLiveData<SearchState>
 
@@ -31,7 +32,8 @@ abstract class SearchViewModel() : ViewModel() {
     }
 
     class Base(
-        private val interactor: Interactor.MainInteractor
+        private val interactor: Interactor<DataModel>,
+        private val historyRepository: HistoryRepository
     ) : SearchViewModel() {
 
         override val liveData = MutableLiveData<SearchState>()
@@ -39,14 +41,14 @@ abstract class SearchViewModel() : ViewModel() {
         override fun getData(word: String) {
             liveData.value = SearchState.Loading
             cancelJob()
-            viewModelCoroutineScope.launch { startInteractor(word) }
-
-        }
-
-        private suspend fun startInteractor(word: String) =
-            withContext(Dispatchers.IO) {
-                liveData.postValue(interactor.getData(word))
+            viewModelCoroutineScope.launch {
+                withContext(Dispatchers.IO) {
+                    val data = interactor.getData(word)
+                    liveData.postValue(SearchState.Success(data))
+                    historyRepository.saveHistory(data.first())
+                }
             }
+        }
 
         override fun handleError(error: Throwable) {
             liveData.postValue(SearchState.Error(error))
@@ -61,14 +63,14 @@ abstract class SearchViewModel() : ViewModel() {
 
 interface Interactor<T : Any> {
 
-    suspend fun getData(word: String): T
+    suspend fun getData(word: String): List<T>
 
     class MainInteractor(
         private val repositoryRemote: Repository<List<DataModel>>
-    ) : Interactor<SearchState> {
+    ) : Interactor<DataModel> {
 
-        override suspend fun getData(word: String): SearchState {
-            return SearchState.Success(repositoryRemote.getData(word))
+        override suspend fun getData(word: String): List<DataModel> {
+            return repositoryRemote.getData(word)
         }
     }
 }

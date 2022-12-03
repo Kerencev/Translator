@@ -29,8 +29,13 @@ val application = module {
 }
 
 val searchScreen = module {
-    factory { Interactor.MainInteractor(repositoryRemote = get()) }
-    viewModel<SearchViewModel> { SearchViewModel.Base(interactor = get()) }
+    factory<Interactor<DataModel>> { Interactor.MainInteractor(repositoryRemote = get()) }
+    viewModel<SearchViewModel> {
+        SearchViewModel.Base(
+            interactor = get(),
+            historyRepository = get()
+        )
+    }
 }
 
 val historyScreen = module {
