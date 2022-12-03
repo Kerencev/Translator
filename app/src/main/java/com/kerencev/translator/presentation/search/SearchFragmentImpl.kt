@@ -2,13 +2,13 @@ package com.kerencev.translator.presentation.search
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.Fragment
 import com.kerencev.translator.R
+import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.databinding.FragmentSearchBinding
 import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.makeGone
 import com.kerencev.translator.presentation.base.makeVisible
-import com.kerencev.translator.presentation.details.DetailsModel
+import com.kerencev.translator.presentation.details.DetailsFragmentImpl
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragmentImpl :
@@ -19,8 +19,11 @@ class SearchFragmentImpl :
     private val adapter by lazy { SearchAdapter(onListItemClickListener) }
     private val onListItemClickListener by lazy {
         object : SearchAdapter.OnListItemClickListener {
-            override fun onItemClick(data: com.kerencev.translator.data.dto.DataModel) {
-                navigateToDetailsFragment(this@SearchFragmentImpl, data.convertToDetailsModel())
+            override fun onItemClick(data: DataModel) {
+                mainActivity?.navigateTo(
+                    currentFragment = this@SearchFragmentImpl,
+                    nextFragment = DetailsFragmentImpl.newInstance(data.convertToDetailsModel())
+                )
             }
         }
     }
@@ -35,6 +38,17 @@ class SearchFragmentImpl :
             mainActivity?.showSearchDialog { word ->
                 viewModel.getData(word)
             }
+        }
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_history -> {
+                    mainActivity?.navigateTo(
+                        currentFragment = this,
+                        nextFragment = DetailsFragmentImpl()
+                    )
+                }
+            }
+            true
         }
     }
 
@@ -78,9 +92,5 @@ class SearchFragmentImpl :
         successLinearLayout.makeGone()
         errorLinearLayout.makeGone()
         progressLoading.makeVisible()
-    }
-
-    override fun navigateToDetailsFragment(fragment: Fragment, data: DetailsModel) {
-        mainActivity?.navigateToDetailsFragment(fragment, data)
     }
 }

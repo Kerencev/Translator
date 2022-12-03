@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.ActivityMainBinding
 import com.kerencev.translator.presentation.base.NavigationActivity
-import com.kerencev.translator.presentation.details.DetailsFragmentImpl
-import com.kerencev.translator.presentation.details.DetailsModel
 import com.kerencev.translator.presentation.search.SearchDialogFragment
 import com.kerencev.translator.presentation.search.SearchFragmentImpl
 
@@ -37,10 +35,10 @@ class MainActivity : AppCompatActivity(), NavigationActivity {
         searchDialogFragment.show(supportFragmentManager, "")
     }
 
-    override fun navigateToDetailsFragment(fragment: Fragment, data: DetailsModel) {
+    override fun navigateTo(currentFragment: Fragment, nextFragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .hide(fragment)
-            .add(R.id.fragment_container, DetailsFragmentImpl.newInstance(data))
+            .hide(currentFragment)
+            .add(R.id.fragment_container, nextFragment)
             .addToBackStack("")
             .commit()
     }
