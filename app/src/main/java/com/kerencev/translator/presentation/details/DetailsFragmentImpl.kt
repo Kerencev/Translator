@@ -14,6 +14,9 @@ class DetailsFragmentImpl :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         getDataFromArgs()?.let { renderData(it) }
+        binding.detailsToolbar.setNavigationOnClickListener {
+            mainActivity?.popBackStack()
+        }
     }
 
     override fun getDataFromArgs(): DetailsModel? {
