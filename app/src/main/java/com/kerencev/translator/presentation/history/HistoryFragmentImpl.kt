@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.View
 import com.kerencev.translator.databinding.FragmentHistoryBinding
 import com.kerencev.translator.presentation.base.BaseFragment
+import com.kerencev.translator.presentation.base.makeGone
+import com.kerencev.translator.presentation.base.makeVisible
+import com.kerencev.translator.presentation.details.DetailsModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate),
@@ -23,6 +26,9 @@ class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistory
             renderData(it)
         }
         binding.historyRecycler.adapter = adapter
+        binding.toolbar.setNavigationOnClickListener {
+            mainActivity?.popBackStack()
+        }
     }
 
     override fun requestData() {
@@ -32,14 +38,36 @@ class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistory
     override fun renderData(historyState: HistoryState) {
         when (historyState) {
             is HistoryState.Success -> {
-                adapter.submitList(historyState.data)
+                showSuccess(historyState.data)
             }
             is HistoryState.Loading -> {
-
+                showLoading()
             }
             is HistoryState.Error -> {
-
+                showError(historyState.error)
             }
+        }
+    }
+
+    override fun showSuccess(data: List<DetailsModel>) = with(binding) {
+        historyRecycler.makeVisible()
+        historyErrorLayout.makeGone()
+        historyProgress.makeGone()
+        adapter.submitList(data)
+    }
+
+    override fun showLoading() = with(binding) {
+        historyProgress.makeVisible()
+        historyRecycler.makeGone()
+        historyErrorLayout.makeGone()
+    }
+
+    override fun showError(throwable: Throwable) = with(binding) {
+        historyErrorLayout.makeVisible()
+        historyProgress.makeGone()
+        historyRecycler.makeGone()
+        reloadButton.setOnClickListener {
+            viewModel.getData()
         }
     }
 }

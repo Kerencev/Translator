@@ -42,4 +42,8 @@ class MainActivity : AppCompatActivity(), NavigationActivity {
             .addToBackStack("")
             .commit()
     }
+
+    override fun popBackStack() {
+        supportFragmentManager.popBackStack()
+    }
 }

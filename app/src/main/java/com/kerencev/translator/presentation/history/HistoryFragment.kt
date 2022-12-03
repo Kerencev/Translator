@@ -5,6 +5,9 @@ import com.kerencev.translator.presentation.details.DetailsModel
 interface HistoryFragment {
     fun requestData()
     fun renderData(historyState: HistoryState)
+    fun showSuccess(data: List<DetailsModel>)
+    fun showLoading()
+    fun showError(throwable: Throwable)
 }
 
 sealed class HistoryState {
