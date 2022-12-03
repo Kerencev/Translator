@@ -2,6 +2,7 @@ package com.kerencev.translator.presentation.history
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.addTextChangedListener
 import com.kerencev.translator.databinding.FragmentHistoryBinding
 import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.makeGone
@@ -36,6 +37,9 @@ class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistory
         binding.historyRecycler.adapter = adapter
         binding.toolbar.setNavigationOnClickListener {
             mainActivity?.popBackStack()
+        }
+        binding.historyTextInput.addTextChangedListener { editable ->
+            viewModel.getData(editable)
         }
     }
 
