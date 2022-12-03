@@ -6,6 +6,7 @@ import com.kerencev.translator.databinding.FragmentHistoryBinding
 import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.makeGone
 import com.kerencev.translator.presentation.base.makeVisible
+import com.kerencev.translator.presentation.details.DetailsFragmentImpl
 import com.kerencev.translator.presentation.details.DetailsModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -14,7 +15,14 @@ class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistory
 
     private val viewModel: HistoryViewModel by viewModel()
     private val adapter: HistoryAdapter by lazy {
-        HistoryAdapter()
+        HistoryAdapter(object : HistoryAdapter.OnItemClickListener {
+            override fun onClick(data: DetailsModel) {
+                mainActivity?.navigateTo(
+                    currentFragment = this@HistoryFragmentImpl,
+                    nextFragment = DetailsFragmentImpl.newInstance(data)
+                )
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

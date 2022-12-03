@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kerencev.translator.databinding.FragmentSearchRecyclerviewItemBinding
 import com.kerencev.translator.presentation.details.DetailsModel
 
-class HistoryAdapter : ListAdapter<DetailsModel, HistoryAdapter.HistoryViewHolder>(ItemCallback()) {
+class HistoryAdapter(private val onItemClickListener: OnItemClickListener) :
+    ListAdapter<DetailsModel, HistoryAdapter.HistoryViewHolder>(ItemCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -27,6 +28,9 @@ class HistoryAdapter : ListAdapter<DetailsModel, HistoryAdapter.HistoryViewHolde
                 headerTextviewRecyclerItem.text = data.word
                 descriptionTextviewRecyclerItem.text =
                     data.translates.substring(0, data.translates.indexOf('\n'))
+                root.setOnClickListener {
+                    onItemClickListener.onClick(data)
+                }
             }
         }
     }
@@ -40,5 +44,9 @@ class HistoryAdapter : ListAdapter<DetailsModel, HistoryAdapter.HistoryViewHolde
         override fun areContentsTheSame(oldItem: DetailsModel, newItem: DetailsModel): Boolean {
             return oldItem == newItem
         }
+    }
+
+    interface OnItemClickListener {
+        fun onClick(data: DetailsModel)
     }
 }
