@@ -11,17 +11,20 @@
         android:layout_height="?attr/actionBarSize">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/history_input_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:endIconDrawable="@drawable/icon_close"
-            app:endIconMode="custom"
-            android:visibility="visible">
+            app:endIconMode="custom">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/history_text_input"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/search" />
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,7 +32,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
+            app:menu="@menu/history_menu"
             app:navigationIcon="@drawable/icon_back"
             app:title="@string/search_history" />
 

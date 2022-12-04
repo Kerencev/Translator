@@ -1,6 +1,5 @@
 package com.kerencev.translator.presentation.history
 
-import android.text.Editable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,8 +18,9 @@ abstract class HistoryViewModel : ViewModel() {
     }
 
     abstract fun getData()
-    abstract fun getData(editable: Editable?)
-    abstract fun handleError(error: Throwable)
+    abstract fun getData(editable: CharSequence?)
+    abstract fun getCacheData()
+    protected abstract fun handleError(error: Throwable)
 
     class Base(private val repository: HistoryRepository) : HistoryViewModel() {
 
@@ -31,24 +31,29 @@ abstract class HistoryViewModel : ViewModel() {
             liveData.value = HistoryState.Loading
             viewModelScope.launch(Dispatchers.IO + exceptionHandler) {
                 val data = repository.getAllHistory()
-                liveData.postValue(HistoryState.Success(data = data))
+                liveData.postValue(HistoryState.Success(data = data, isSearchState = false))
+                cacheData.clear()
                 cacheData.addAll(data)
             }
         }
 
-        override fun getData(editable: Editable?) {
+        override fun getData(editable: CharSequence?) {
             if (editable.isNullOrEmpty()) {
-                liveData.value = HistoryState.Success(data = cacheData)
+                liveData.value = HistoryState.Success(data = cacheData, isSearchState = true)
                 return
             }
-            liveData.value = HistoryState.Success(filter(editable))
+            liveData.value = HistoryState.Success(data = filter(editable), isSearchState = true)
+        }
+
+        override fun getCacheData() {
+            liveData.value = HistoryState.Success(data = cacheData, isSearchState = false)
         }
 
         override fun handleError(error: Throwable) {
-            liveData.value = HistoryState.Error(error)
+            liveData.postValue(HistoryState.Error(error))
         }
 
-        private fun filter(editable: Editable): List<DetailsModel> {
+        private fun filter(editable: CharSequence): List<DetailsModel> {
             val result = mutableListOf<DetailsModel>()
             cacheData.forEach { detailsModel ->
                 val word = detailsModel.word ?: ""
