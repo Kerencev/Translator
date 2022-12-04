@@ -46,23 +46,27 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 
-    //RxJava
-    def rx_java_version = "3.0.0"
-    implementation "io.reactivex.rxjava3:rxjava:$rx_java_version"
-    implementation "io.reactivex.rxjava3:rxandroid:$rx_java_version"
-
     //Retrofit
     def retrofit_version = "2.9.0"
-    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
 
     //Koin
-    def koin_version= "3.1.2"
+    def koin_version = "3.1.2"
     implementation "io.insert-koin:koin-android:$koin_version"
 
     //ViewModel
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.14.2'
+
+    //Room
+    def room_version = "2.4.3"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 }
