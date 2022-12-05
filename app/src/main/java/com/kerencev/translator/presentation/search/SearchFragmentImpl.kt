@@ -2,6 +2,7 @@ package com.kerencev.translator.presentation.search
 
 import android.os.Bundle
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.kerencev.data.dto.DataModel
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.FragmentSearchBinding
@@ -52,7 +53,7 @@ class SearchFragmentImpl :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mainActivityRecyclerview.adapter = adapter
+        view.findViewById<RecyclerView>(R.id.main_activity_recyclerview).adapter = adapter
         viewModel.liveData.observe(viewLifecycleOwner) {
             renderData(it)
         }
