@@ -5,17 +5,27 @@ import android.view.View
 import com.kerencev.data.dto.DataModel
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.FragmentSearchBinding
+import com.kerencev.translator.di.SCOPE_A
 import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.makeGone
 import com.kerencev.translator.presentation.base.makeVisible
 import com.kerencev.translator.presentation.details.DetailsFragmentImpl
 import com.kerencev.translator.presentation.history.HistoryFragmentImpl
+import com.kerencev.translator.test.TestDep
 import com.kerencev.translator.utils.Converter
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.getOrCreateScope
+import org.koin.core.qualifier.named
 
 class SearchFragmentImpl :
     BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate),
-    SearchFragment<SearchState> {
+    SearchFragment<SearchState>, KoinScopeComponent {
+
+    private val myScope by lazy { getKoin().getOrCreateScope("", named(SCOPE_A)) }
+    override val scope by getOrCreateScope()
+    private val testDep: TestDep by inject()
 
     private val viewModel: SearchViewModel by viewModel()
     private val adapter by lazy { SearchAdapter(onListItemClickListener) }
@@ -32,6 +42,12 @@ class SearchFragmentImpl :
                 )
             }
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        myScope.get<TestDep>().printSelf()
+        testDep.printSelf()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -98,5 +114,10 @@ class SearchFragmentImpl :
         successLinearLayout.makeGone()
         errorLinearLayout.makeGone()
         progressLoading.makeVisible()
+    }
+
+    override fun onDestroy() {
+        myScope.close()
+        super.onDestroy()
     }
 }
