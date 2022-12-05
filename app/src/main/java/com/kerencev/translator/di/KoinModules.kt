@@ -9,9 +9,12 @@ import com.kerencev.domain.Repository
 import com.kerencev.domain.RepositoryImplementation
 import com.kerencev.translator.presentation.history.HistoryViewModel
 import com.kerencev.translator.presentation.search.Interactor
+import com.kerencev.translator.presentation.search.SearchFragmentImpl
 import com.kerencev.translator.presentation.search.SearchViewModel
+import com.kerencev.translator.test.TestDep
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val application = module {
@@ -32,6 +35,13 @@ val application = module {
 }
 
 val searchScreen = module {
+    scope(named(SCOPE_A)) {
+        scoped { TestDep() }
+    }
+    scope<SearchFragmentImpl> {
+        scoped { TestDep() }
+    }
+
     factory<Interactor<DataModel>> { Interactor.MainInteractor(repositoryRemote = get()) }
     viewModel<SearchViewModel> {
         SearchViewModel.Base(
@@ -44,3 +54,6 @@ val searchScreen = module {
 val historyScreen = module {
     viewModel<HistoryViewModel> { HistoryViewModel.Base(repository = get()) }
 }
+
+const val SCOPE_A = "SCOPE_A"
+const val SCOPE_B = "SCOPE_B"
