@@ -5,8 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.kerencev.domain.model.DetailsModel
 import com.kerencev.translator.databinding.FragmentSearchRecyclerviewItemBinding
-import com.kerencev.translator.presentation.details.DetailsModel
 
 class HistoryAdapter(private val onItemClickListener: OnItemClickListener) :
     ListAdapter<DetailsModel, HistoryAdapter.HistoryViewHolder>(ItemCallback()) {

@@ -2,9 +2,9 @@ package com.kerencev.translator.presentation.search
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kerencev.translator.data.dto.DataModel
-import com.kerencev.translator.domain.repository.HistoryRepository
-import com.kerencev.translator.domain.repository.Repository
+import com.kerencev.data.dto.DataModel
+import com.kerencev.domain.HistoryRepository
+import com.kerencev.domain.Repository
 import kotlinx.coroutines.*
 
 abstract class SearchViewModel : ViewModel() {

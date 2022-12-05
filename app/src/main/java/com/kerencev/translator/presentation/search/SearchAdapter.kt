@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.kerencev.translator.data.dto.DataModel
+import com.kerencev.data.dto.DataModel
 import com.kerencev.translator.databinding.FragmentSearchRecyclerviewItemBinding
 
 class SearchAdapter(
