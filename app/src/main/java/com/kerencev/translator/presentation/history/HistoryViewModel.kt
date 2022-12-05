@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.kerencev.translator.domain.repository.HistoryRepository
-import com.kerencev.translator.presentation.details.DetailsModel
+import com.kerencev.domain.HistoryRepository
+import com.kerencev.domain.model.DetailsModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

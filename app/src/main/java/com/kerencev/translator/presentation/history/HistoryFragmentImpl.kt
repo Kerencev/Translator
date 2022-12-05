@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import com.kerencev.domain.model.DetailsModel
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.FragmentHistoryBinding
 import com.kerencev.translator.presentation.base.*
 import com.kerencev.translator.presentation.details.DetailsFragmentImpl
-import com.kerencev.translator.presentation.details.DetailsModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HistoryFragmentImpl : BaseFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate),

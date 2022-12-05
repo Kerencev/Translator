@@ -2,14 +2,15 @@ package com.kerencev.translator.presentation.search
 
 import android.os.Bundle
 import android.view.View
+import com.kerencev.data.dto.DataModel
 import com.kerencev.translator.R
-import com.kerencev.translator.data.dto.DataModel
 import com.kerencev.translator.databinding.FragmentSearchBinding
 import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.makeGone
 import com.kerencev.translator.presentation.base.makeVisible
 import com.kerencev.translator.presentation.details.DetailsFragmentImpl
 import com.kerencev.translator.presentation.history.HistoryFragmentImpl
+import com.kerencev.translator.utils.Converter
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragmentImpl :
@@ -23,7 +24,11 @@ class SearchFragmentImpl :
             override fun onItemClick(data: DataModel) {
                 mainActivity?.navigateTo(
                     currentFragment = this@SearchFragmentImpl,
-                    nextFragment = DetailsFragmentImpl.newInstance(data.convertToDetailsModel())
+                    nextFragment = DetailsFragmentImpl.newInstance(
+                        Converter.convertToDetailsModel(
+                            data
+                        )
+                    )
                 )
             }
         }

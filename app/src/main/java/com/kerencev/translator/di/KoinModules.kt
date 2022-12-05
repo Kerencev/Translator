@@ -1,12 +1,12 @@
 package com.kerencev.translator.di
 
 import androidx.room.Room
-import com.kerencev.translator.data.dto.DataModel
-import com.kerencev.translator.data.local.DataBase
-import com.kerencev.translator.data.remote.DataSource
-import com.kerencev.translator.domain.repository.HistoryRepository
-import com.kerencev.translator.domain.repository.Repository
-import com.kerencev.translator.domain.repository.RepositoryImplementation
+import com.kerencev.data.dto.DataModel
+import com.kerencev.data.local.DataBase
+import com.kerencev.data.remote.DataSource
+import com.kerencev.domain.HistoryRepository
+import com.kerencev.domain.Repository
+import com.kerencev.domain.RepositoryImplementation
 import com.kerencev.translator.presentation.history.HistoryViewModel
 import com.kerencev.translator.presentation.search.Interactor
 import com.kerencev.translator.presentation.search.SearchViewModel
@@ -26,8 +26,9 @@ val application = module {
         )
             .fallbackToDestructiveMigration()
             .build()
+            .historyDao()
     }
-    single<HistoryRepository> { HistoryRepository.Base(db = get()) }
+    single<HistoryRepository> { HistoryRepository.Base(historyDao = get()) }
 }
 
 val searchScreen = module {

@@ -1,6 +1,6 @@
 package com.kerencev.translator.presentation.history
 
-import com.kerencev.translator.presentation.details.DetailsModel
+import com.kerencev.domain.model.DetailsModel
 
 interface HistoryFragment {
     fun requestData()

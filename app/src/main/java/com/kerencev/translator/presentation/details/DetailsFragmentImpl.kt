@@ -3,6 +3,7 @@ package com.kerencev.translator.presentation.details
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import com.kerencev.domain.model.DetailsModel
 import com.kerencev.translator.databinding.FragmentDetailsBinding
 import com.kerencev.translator.presentation.base.BaseFragment
 import com.kerencev.translator.presentation.base.loadImage

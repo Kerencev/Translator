@@ -1,6 +1,6 @@
 package com.kerencev.translator.presentation.search
 
-import com.kerencev.translator.data.dto.DataModel
+import com.kerencev.data.dto.DataModel
 
 interface SearchFragment<T : SearchState> {
     fun renderData(appState: T)
