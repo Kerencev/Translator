@@ -1,11 +1,15 @@
 package com.kerencev.translator.presentation.search
 
+import android.graphics.RenderEffect
+import android.graphics.Shader
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import com.kerencev.data.dto.DataModel
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.FragmentSearchBinding
 import com.kerencev.translator.presentation.base.BaseFragment
+import com.kerencev.translator.presentation.base.DialogFragmentListener
 import com.kerencev.translator.presentation.base.makeGone
 import com.kerencev.translator.presentation.base.makeVisible
 import com.kerencev.translator.presentation.details.DetailsFragmentImpl
@@ -41,9 +45,16 @@ class SearchFragmentImpl :
             renderData(it)
         }
         binding.searchFab.setOnClickListener {
-            mainActivity?.showSearchDialog { word ->
-                viewModel.getData(word)
-            }
+            makeBlur(RENDER_SOFT_BLUR)
+            mainActivity?.showSearchDialog(object : DialogFragmentListener {
+                override fun onSearchClick(word: String) {
+                    viewModel.getData(word)
+                }
+
+                override fun onDismiss() {
+                    makeBlur(RENDER_NO_BLUR)
+                }
+            })
         }
         binding.toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -98,5 +109,22 @@ class SearchFragmentImpl :
         successLinearLayout.makeGone()
         errorLinearLayout.makeGone()
         progressLoading.makeVisible()
+    }
+
+    private fun makeBlur(blur: Float) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            binding.root.setRenderEffect(
+                RenderEffect.createBlurEffect(
+                    blur,
+                    blur,
+                    Shader.TileMode.MIRROR
+                )
+            )
+        }
+    }
+
+    companion object {
+        private const val RENDER_NO_BLUR = 0.0000001f
+        private const val RENDER_SOFT_BLUR = 8f
     }
 }

@@ -39,6 +39,7 @@ abstract class SearchViewModel : ViewModel() {
         override val liveData = MutableLiveData<SearchState>()
 
         override fun getData(word: String) {
+            if (word.isEmpty()) return
             liveData.value = SearchState.Loading
             cancelJob()
             viewModelCoroutineScope.launch {

@@ -1,5 +1,6 @@
 package com.kerencev.translator.presentation.search
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -60,6 +61,11 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
         addOnClearClickListener()
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        onSearchClickListener?.onDismiss()
+        super.onDismiss(dialog)
+    }
+
     override fun onDestroyView() {
         onSearchClickListener = null
         super.onDestroyView()
@@ -73,8 +79,8 @@ class SearchDialogFragment : BottomSheetDialogFragment() {
     }
 
     interface OnSearchClickListener {
-
         fun onClick(searchWord: String)
+        fun onDismiss()
     }
 
     companion object {

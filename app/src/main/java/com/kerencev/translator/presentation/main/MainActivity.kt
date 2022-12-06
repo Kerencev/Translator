@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.kerencev.translator.R
 import com.kerencev.translator.databinding.ActivityMainBinding
+import com.kerencev.translator.presentation.base.DialogFragmentListener
 import com.kerencev.translator.presentation.base.NavigationActivity
 import com.kerencev.translator.presentation.search.SearchDialogFragment
 import com.kerencev.translator.presentation.search.SearchFragmentImpl
@@ -24,12 +25,16 @@ class MainActivity : AppCompatActivity(), NavigationActivity {
         }
     }
 
-    override fun showSearchDialog(listener: (s: String) -> Unit) {
+    override fun showSearchDialog(dialogFragmentListener: DialogFragmentListener) {
         val searchDialogFragment = SearchDialogFragment.newInstance()
         searchDialogFragment.setOnSearchClickListener(object :
             SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                listener.invoke(searchWord)
+                dialogFragmentListener.onSearchClick(searchWord)
+            }
+
+            override fun onDismiss() {
+                dialogFragmentListener.onDismiss()
             }
         })
         searchDialogFragment.show(supportFragmentManager, "")
