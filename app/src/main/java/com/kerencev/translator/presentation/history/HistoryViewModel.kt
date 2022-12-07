@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kerencev.domain.HistoryRepository
 import com.kerencev.domain.model.DetailsModel
+import com.kerencev.translator.utils.Filter
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,7 +23,10 @@ abstract class HistoryViewModel : ViewModel() {
     abstract fun getCacheData()
     protected abstract fun handleError(error: Throwable)
 
-    class Base(private val repository: HistoryRepository) : HistoryViewModel() {
+    class Base(
+        private val repository: HistoryRepository,
+        private val filter: Filter<DetailsModel>
+    ) : HistoryViewModel() {
 
         override val liveData = MutableLiveData<HistoryState>()
         private var cacheData = ArrayList<DetailsModel>()
@@ -42,7 +46,8 @@ abstract class HistoryViewModel : ViewModel() {
                 liveData.value = HistoryState.Success(data = cacheData, isSearchState = true)
                 return
             }
-            liveData.value = HistoryState.Success(data = filter(editable), isSearchState = true)
+            val filteredData = filter.getFilteredList(charSequence = editable, data = cacheData)
+            liveData.value = HistoryState.Success(filteredData, isSearchState = true)
         }
 
         override fun getCacheData() {
@@ -51,23 +56,6 @@ abstract class HistoryViewModel : ViewModel() {
 
         override fun handleError(error: Throwable) {
             liveData.postValue(HistoryState.Error(error))
-        }
-
-        private fun filter(editable: CharSequence): List<DetailsModel> {
-            val result = mutableListOf<DetailsModel>()
-            cacheData.forEach { detailsModel ->
-                val word = detailsModel.word ?: ""
-                val translate =
-                    detailsModel.translates.substring(0, detailsModel.translates.indexOf('\n'))
-                if (word.contains(editable, ignoreCase = true) || translate.contains(
-                        editable,
-                        ignoreCase = true
-                    )
-                ) {
-                    result.add(detailsModel)
-                }
-            }
-            return result
         }
     }
 }
