@@ -14,8 +14,11 @@ interface Filter<T> {
             val result = mutableListOf<DetailsModel>()
             data.forEach { detailsModel ->
                 val word = detailsModel.word ?: ""
-                val translate =
+                val translate = if (detailsModel.translates.contains("\n")) {
                     detailsModel.translates.substring(0, detailsModel.translates.indexOf('\n'))
+                } else {
+                    detailsModel.translates
+                }
                 if (word.contains(charSequence, ignoreCase = true) ||
                     translate.contains(charSequence, ignoreCase = true)
                 ) {
