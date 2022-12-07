@@ -7,9 +7,11 @@ import com.kerencev.data.remote.DataSource
 import com.kerencev.domain.HistoryRepository
 import com.kerencev.domain.Repository
 import com.kerencev.domain.RepositoryImplementation
+import com.kerencev.domain.model.DetailsModel
 import com.kerencev.translator.presentation.history.HistoryViewModel
 import com.kerencev.translator.presentation.search.Interactor
 import com.kerencev.translator.presentation.search.SearchViewModel
+import com.kerencev.translator.utils.Filter
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -42,5 +44,6 @@ val searchScreen = module {
 }
 
 val historyScreen = module {
-    viewModel<HistoryViewModel> { HistoryViewModel.Base(repository = get()) }
+    factory<Filter<DetailsModel>> { Filter.HistoryFilter() }
+    viewModel<HistoryViewModel> { HistoryViewModel.Base(repository = get(), filter = get()) }
 }
